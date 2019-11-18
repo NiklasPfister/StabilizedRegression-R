@@ -11,22 +11,23 @@ N. Pfister, E. G. Williams, J. Peters, R. Aebersold, P. Bühlmann: Stabilizing V
 
 Clone this repository. Then, the package can be installed and loaded with the following commands:
 
-'''R
+```R
 install.packages("PATHTOPACKAGE/StabilizedRegression_1.0.tar.gz")
 library(StabilizedRegression)
-'''
+```
 
 The main functions are StabilizedRegression(), which performs a multi-environment regression.
 
-'''R
+```R
 help(StabilizedRegression)
 example(StabilizedRegression)
-'''
+```
 
 The diagnostic plots can be created by using the function SRanalysis(). This will generate an object of class 'SRanalysis' which can then be plotted with using the plot function.
-'''R
+
+```R
 help(SRanalysis)
 example(SRanalysis)
-'''
+```
 
 To try out the package on the mouse data, run the example in mouse_example/example.R.
