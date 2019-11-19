@@ -95,7 +95,7 @@ SRanalysis <- function(X, Y, A,
   if(length(unique(pred_scores)) == 1 & length(unique(prescreen_types)) == 1){
     single_iteration <- function(Xsub, Ysub, Asub){
       # SR
-      pars_SR$compute_predictive <- TRUE
+      pars_SR$compute_predictive_model <- TRUE
       pars_SR$pred_score <- pred_scores[1]
       pars_SR$prescreen_type <- prescreen_types[1]
       fit <- StabilizedRegression(Xsub, Ysub, Asub,
@@ -118,7 +118,6 @@ SRanalysis <- function(X, Y, A,
   }
   else{
     single_iteration <- function(Xsub, Ysub, Asub){
-      set.seed(1)
       # SR   
       pars_SR$compute_predictive_model <- FALSE
       pars_SR$pred_score <- pred_scores[1]
@@ -149,10 +148,10 @@ SRanalysis <- function(X, Y, A,
   }
 
   ## Apply stability selection resampling
-  indlist <- lapply(1:num_reps, function(i) sample(1:n, floor(n/2), replace=FALSE))
+  indlist <- lapply(1:num_reps, function(i) sample(1:n, floor(n/2), replace=TRUE))
   resample_res <- mclapply(indlist,
                            function(ind) single_iteration(X[ind,,drop=FALSE], Y[ind], A[ind]),
-                           mc.cores=cores)
+                           mc.cores=cores, mc.preschedule=FALSE)
   
   ## Compute selection probabilities
   print(resample_res)
