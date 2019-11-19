@@ -132,6 +132,7 @@ SRanalysis <- function(X, Y, A,
       pars_SR$compute_predictive <- TRUE
       pars_SR$pred_score <- pred_scores[2]
       pars_SR$prescreen_type <- prescreen_types[2]
+      print(pars_SR)
       fit <- StabilizedRegression(Xsub, Ysub, Asub,
                                   pars_SR,
                                   verbose=0)
