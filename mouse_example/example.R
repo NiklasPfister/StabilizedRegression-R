@@ -1,6 +1,5 @@
 ## Load functions and packages
-library(StabilizedRegression)
-
+library(StabilizedRegression, lib.loc="/sfs/u/pfisteni/R/x86_64-pc-linux-gnu-library/3.6")
 
 ## Load data
 load("data/pathway_info.Rda")
