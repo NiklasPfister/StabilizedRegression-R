@@ -118,7 +118,8 @@ SRanalysis <- function(X, Y, A,
   }
   else{
     single_iteration <- function(Xsub, Ysub, Asub){
-      # SR
+      set.seed(1)
+      # SR   
       pars_SR$compute_predictive <- FALSE
       pars_SR$pred_score <- pred_scores[1]
       pars_SR$prescreen_type <- prescreen_types[1]
