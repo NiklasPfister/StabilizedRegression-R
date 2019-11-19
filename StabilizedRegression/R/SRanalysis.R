@@ -148,7 +148,7 @@ SRanalysis <- function(X, Y, A,
   }
 
   ## Apply stability selection resampling
-  indlist <- lapply(1:num_reps, function(i) sample(1:n, floor(n/2), replace=TRUE))
+  indlist <- lapply(1:num_reps, function(i) sample(1:n, floor(n/2), replace=F))
   resample_res <- mclapply(indlist,
                            function(ind) single_iteration(X[ind,,drop=FALSE], Y[ind], A[ind]),
                            mc.cores=cores)
