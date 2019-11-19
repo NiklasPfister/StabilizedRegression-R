@@ -120,7 +120,7 @@ SRanalysis <- function(X, Y, A,
     single_iteration <- function(Xsub, Ysub, Asub){
       set.seed(1)
       # SR   
-      pars_SR$compute_predictive <- FALSE
+      pars_SR$compute_predictive_model <- FALSE
       pars_SR$pred_score <- pred_scores[1]
       pars_SR$prescreen_type <- prescreen_types[1]
       fit <- StabilizedRegression(Xsub, Ysub, Asub,
@@ -129,10 +129,9 @@ SRanalysis <- function(X, Y, A,
       vs_stab <- fit$variable_importance
       beta_stab <- coef(fit)
       # SRpred
-      pars_SR$compute_predictive <- TRUE
+      pars_SR$compute_predictive_model <- TRUE
       pars_SR$pred_score <- pred_scores[2]
       pars_SR$prescreen_type <- prescreen_types[2]
-      print(pars_SR)
       fit <- StabilizedRegression(Xsub, Ysub, Asub,
                                   pars_SR,
                                   verbose=0)
@@ -150,12 +149,13 @@ SRanalysis <- function(X, Y, A,
   }
 
   ## Apply stability selection resampling
-  indlist <- lapply(1:num_reps, function(i) sample(1:n, floor(n/2), replace=F))
+  indlist <- lapply(1:num_reps, function(i) sample(1:n, floor(n/2), replace=FALSE))
   resample_res <- mclapply(indlist,
                            function(ind) single_iteration(X[ind,,drop=FALSE], Y[ind], A[ind]),
                            mc.cores=cores)
   
   ## Compute selection probabilities
+  print(resample_res)
   vs_ind <- startsWith(names(resample_res[[1]]), "SR")
   num_methods <- sum(vs_ind)
   method_name <- vector("numeric", num_methods)
