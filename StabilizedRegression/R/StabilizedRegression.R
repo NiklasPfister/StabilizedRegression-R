@@ -21,7 +21,7 @@
 ##'   vector specifying a probablity for each potential set size from
 ##'   1 to \code{m}. \code{compute_predictive_model} (default TRUE)
 ##'   boolean specifying whether to additionally compute SR (pred) and
-##'   SR (diff) as well. \code{prescreen_size} (default nrow(X)-1)
+##'   SR (diff) as well. \code{prescreen_size} (default NA)
 ##'   integer specifying the number of variables to screen down to
 ##'   before applying SR, if NA then no screening is
 ##'   applied. \code{prescreen_type} (default "correlation") one of
@@ -88,7 +88,7 @@ StabilizedRegression <- function(X, Y, A,
                                            size_weight="linear",
                                            compute_predictive_model=TRUE,
                                            use_resampling=FALSE,
-                                           prescreen_size=nrow(X)-1,
+                                           prescreen_size=NA,
                                            prescreen_type="correlation",
                                            stab_test="exact",
                                            pred_score="mse",
@@ -119,7 +119,7 @@ StabilizedRegression <- function(X, Y, A,
     pars$use_resampling <- FALSE
   }
   if(!exists("prescreen_size", pars)){
-    pars$prescreen_size <- nrow(X)-1
+    pars$prescreen_size <- NA
   }
   if(!exists("prescreen_type", pars)){
     pars$prescreen_type <- "correlation"
@@ -157,7 +157,7 @@ StabilizedRegression <- function(X, Y, A,
 
   ## Prescreen
   if(is.numeric(pars$prescreen_size)){
-    pars$prescreen_size <- min(c(pars$prescreen_size, nrow(X)-1, ncol(X)))
+    pars$prescreen_size <- min(c(pars$prescreen_size, ncol(X)))
     if(pars$prescreen_type == "lasso"){
       fit <- glmnet(X, Y)
       sel.matrix <- (fit$beta != 0)
@@ -208,7 +208,7 @@ StabilizedRegression <- function(X, Y, A,
   else{
     screened_vars <- 1:d
   }
-  m <- min(c(pars$m, length(screened_vars)))
+  m <- min(c(pars$m, length(screened_vars), nrow(X)-1))
 
   ## Define function for a single iteration
   single_iteration <- function(S, extra){

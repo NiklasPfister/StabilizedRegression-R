@@ -1,5 +1,5 @@
 ## Load functions and packages
-library(StabilizedRegression, lib.loc="/sfs/u/pfisteni/R/x86_64-pc-linux-gnu-library/3.6")
+library(StabilizedRegression)
 
 ## Load data
 load("data/pathway_info.Rda")
@@ -65,7 +65,7 @@ pars <- list(m=6,
              stab_test="exact",
              variable_importance="weighted")
 
-fit_obj <- SRanalysis(X, Y, A, 200,
+fit_obj <- SRanalysis(X, Y, A, 1,
                       pars_SR=pars, cores=cores)
 
 plot_obj <- plot(fit_obj, x_axis="SRdiff", varnames=colnames(X), labels=TRUE)

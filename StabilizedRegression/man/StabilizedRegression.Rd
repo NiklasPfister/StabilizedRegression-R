@@ -7,9 +7,9 @@
 StabilizedRegression(X, Y, A, pars = list(m = ncol(X), B = 100,
   alpha_stab = 0.05, alpha_pred = 0.05, size_weight = "linear",
   compute_predictive_model = TRUE, use_resampling = FALSE, prescreen_size =
-  nrow(X) - 1, prescreen_type = "correlation", stab_test = "exact",
-  pred_score = "mse", variable_importance = "scaled_coefficient"),
-  verbose = 0, seed = NA)
+  NA, prescreen_type = "correlation", stab_test = "exact", pred_score =
+  "mse", variable_importance = "scaled_coefficient"), verbose = 0,
+  seed = NA)
 }
 \arguments{
 \item{X}{predictor matrix. Numeric matrix of size n times d, where
@@ -32,7 +32,7 @@ cutoff. \code{size_weight} (default "linear") one of the strings
 vector specifying a probablity for each potential set size from
 1 to \code{m}. \code{compute_predictive_model} (default TRUE)
 boolean specifying whether to additionally compute SR (pred) and
-SR (diff) as well. \code{prescreen_size} (default nrow(X)-1)
+SR (diff) as well. \code{prescreen_size} (default NA)
 integer specifying the number of variables to screen down to
 before applying SR, if NA then no screening is
 applied. \code{prescreen_type} (default "correlation") one of

@@ -88,6 +88,10 @@ SRanalysis <- function(X, Y, A,
     set.seed(seed)
   }
 
+  ##### TMP
+  set.seed(1111)
+  ##### TMP
+
   ## Set parameters
   n <- nrow(X)
 
@@ -119,7 +123,9 @@ SRanalysis <- function(X, Y, A,
   else{
     single_iteration <- function(Xsub, Ysub, Asub){
       # SR
+      ##### TMP
       set.seed(1)
+      ##### TMP
       pars_SR$compute_predictive_model <- FALSE
       pars_SR$pred_score <- pred_scores[1]
       pars_SR$prescreen_type <- prescreen_types[1]
@@ -149,13 +155,14 @@ SRanalysis <- function(X, Y, A,
   }
 
   ## Apply stability selection resampling
+  ##### TMP
   indlist <- lapply(1:num_reps, function(i) sample(1:n, floor(n/2), replace=FALSE))
+  ##### TMP
   resample_res <- mclapply(indlist,
                            function(ind) single_iteration(X[ind,,drop=FALSE], Y[ind], A[ind]),
                            mc.cores=cores, mc.preschedule=FALSE)
   
   ## Compute selection probabilities
-  print(resample_res)
   vs_ind <- startsWith(names(resample_res[[1]]), "SR")
   num_methods <- sum(vs_ind)
   method_name <- vector("numeric", num_methods)

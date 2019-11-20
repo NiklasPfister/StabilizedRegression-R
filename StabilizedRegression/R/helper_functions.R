@@ -31,7 +31,7 @@ bootstrap_mse <- function(Y, X, A, num, pred_score){
       predmat[,i] <- sapply(1:num, function(x)
         mse_env(sample(1:n, n, replace=TRUE), Xtmp, Ytmp))
     }
-    return(apply(predmat, 2, min))
+    return(apply(predmat, 1, min))
   }
 }
 
