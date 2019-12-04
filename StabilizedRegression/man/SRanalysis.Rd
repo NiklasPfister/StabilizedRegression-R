@@ -48,6 +48,7 @@ Object of class 'SRanalysis' consisting of the following
   elements
 
 \item{results}{List of stability selection results for for SR, SRpred and SRdiff.}
+\item{varnames}{Vector of variable names taken from the column names of X.}
 \item{beta_stab}{Vector of average coefficient signs for SR}
 \item{beta_pred}{Vector of average coefficient signs for SRpred}
 }

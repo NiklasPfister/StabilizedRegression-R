@@ -8,8 +8,8 @@ StabilizedRegression(X, Y, A, pars = list(m = ncol(X), B = 100,
   alpha_stab = 0.05, alpha_pred = 0.05, size_weight = "linear",
   compute_predictive_model = TRUE, use_resampling = FALSE, prescreen_size =
   NA, prescreen_type = "correlation", stab_test = "exact", pred_score =
-  "mse", variable_importance = "scaled_coefficient"), verbose = 0,
-  seed = NA)
+  "mse", topk = 1, variable_importance = "scaled_coefficient"),
+  verbose = 0, seed = NA)
 }
 \arguments{
 \item{X}{predictor matrix. Numeric matrix of size n times d, where
@@ -32,9 +32,9 @@ cutoff. \code{size_weight} (default "linear") one of the strings
 vector specifying a probablity for each potential set size from
 1 to \code{m}. \code{compute_predictive_model} (default TRUE)
 boolean specifying whether to additionally compute SR (pred) and
-SR (diff) as well. \code{prescreen_size} (default NA)
-integer specifying the number of variables to screen down to
-before applying SR, if NA then no screening is
+SR (diff) as well. \code{prescreen_size} (default NA) integer
+specifying the number of variables to screen down to before
+applying SR, if NA then no screening is
 applied. \code{prescreen_type} (default "correlation") one of
 the strings "correlation", "ols", "lasso", "deconfounding",
 "correlation_env", "deconfounding_env" specifying the type of
@@ -47,8 +47,12 @@ residuals. \code{pred_score} (default "mse") specifies the
 prediction score. Either "mse" for the mean squared error,
 "mse_env" for the environment-wise best mean squared error,
 "aic" for the Akaike information criterion or "bic" for the
-Bayesian information criterion. \code{variable_importance}
-(default "scaled_coefficient") specifies the type of variable
+Bayesian information criterion. code{topk} (default 1) is a
+tuning parameter that can be used to increase the number of
+predictive sets. It should be an integer value, where higher
+values lead to more accepted sets based on the predictive
+cutoff. \code{variable_importance} (default
+"scaled_coefficient") specifies the type of variable
 ranking. Either "weighted" for a weighted average of all
 selected subsets, "scaled_coefficient" for a ranking based on
 the scaled average regression parameter or "permutation" for a
@@ -88,7 +92,7 @@ X2 <- 0.5 * X1 + Y + 0.2 * c(rnorm(100), rnorm(100)+2)
 X <- cbind(X1, X2)
 A <- as.factor(rep(c(0, 1), each=100))
 
-fit_sr <- StabilizedRegression(X, Y, A)
+fit_sr <- StabilizedRegression(X, Y, A, pars=list(B=NA))
 fit_lm <- lm(Y ~ X)
 
 print(paste("Coefficients of SR:", toString(coefficients(fit_sr))))

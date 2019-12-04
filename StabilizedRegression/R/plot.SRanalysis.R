@@ -4,7 +4,8 @@
 ##' @param x object of class 'SRanalysis'.
 ##' @param x_axis either "SRdiff" or "SRpred".
 ##' @param varnames vector of variables names given in same ordering
-##'   as columns of X.
+##'   as columns of X. If NA the variable names saved in the
+##'   SRanalysis object are used.
 ##' @param labels boolean specifying whether to print names for all
 ##'   variables with selection probability greater than 0.5. Only
 ##'   works if varnames has been given.
@@ -36,8 +37,14 @@ plot.SRanalysis <- function(x, x_axis="SRdiff", varnames=NA, labels=FALSE, ...){
     stop("x_axis needs to be either SRpred or SRdiff")
   }
   beta_sign <- x$beta_stab[-1]
-  if(length(varnames) == 1){
-    varnames <- rep(varnames[1], length(sp_stab))
+  if(length(varnames) != length(sp_stab)){
+    if(is.na(varnames[1])){
+      varnames <- x$varnames
+    }
+    else{
+      warning("Length of supplied varnames does not correspond to results. Names from SRanalysis object are used.")
+      varnames <- x$varnames
+    }
   }
 
   df <- data.frame(sp_pred=sp_pred, sp_stab=sp_stab,

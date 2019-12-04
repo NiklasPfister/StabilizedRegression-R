@@ -45,7 +45,7 @@ linear_regressor <- R6Class("linear_regressor",
                                   self$S <- self$S[nonna[-1]]
                                   self$estimator <- self$estimator[nonna,,drop=FALSE]
                                 }
-                                self$scores = c(res$pval, res$pred_score)
+                                self$scores <- c(res$pval, res$pred_score)
                               },
                               predict = function(X){
                                 X <- cbind(rep(1, nrow(X)), X[, self$S, drop=FALSE])
@@ -69,6 +69,10 @@ getpval <- function(Y, X, Alist, maxNoObs=1000,
     else if(pred_score[i] == "mse_env"){
       predscore[i] <- min(sapply(Alist, function(Aind)
         mean(residuals(lm.fit(X[Aind,,drop=FALSE], Y[Aind]))^2)))
+    }
+    else if(pred_score[i] == "expvar_env"){
+      predscore[i] <- min(sapply(Alist, function(Aind)
+        mean(residuals(lm.fit(X[Aind,,drop=FALSE], Y[Aind]))^2)/mean((Y[Aind]-mean(Y[Aind]))^2)))
     }
     else if(pred_score[i] == "aic"){
       predscore[i] <- extractAIC(linm, k=2)[2]

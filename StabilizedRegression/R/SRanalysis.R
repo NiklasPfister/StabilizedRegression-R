@@ -39,6 +39,7 @@
 ##'   elements
 ##'
 ##' \item{results}{List of stability selection results for for SR, SRpred and SRdiff.}
+##' \item{varnames}{Vector of variable names taken from the column names of X.}
 ##' \item{beta_stab}{Vector of average coefficient signs for SR}
 ##' \item{beta_pred}{Vector of average coefficient signs for SRpred}
 ##' 
@@ -152,6 +153,8 @@ SRanalysis <- function(X, Y, A,
   resample_res <- mclapply(indlist,
                            function(ind) single_iteration(X[ind,,drop=FALSE], Y[ind], A[ind]),
                            mc.cores=cores, mc.preschedule=FALSE)
+  ## resample_res <- lapply(indlist,
+  ##                        function(ind) single_iteration(X[ind,,drop=FALSE], Y[ind], A[ind]))
   
   ## Compute selection probabilities
   vs_ind <- startsWith(names(resample_res[[1]]), "SR")
@@ -195,6 +198,7 @@ SRanalysis <- function(X, Y, A,
 
   ## Collect results
   res <- list(results=results,
+              varnames=colnames(X),
               beta_pred=beta_pred,
               beta_stab=beta_stab)
   class(res) <- "SRanalysis"

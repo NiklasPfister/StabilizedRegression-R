@@ -33,6 +33,23 @@ bootstrap_mse <- function(Y, X, A, num, pred_score){
     }
     return(apply(predmat, 1, min))
   }
+  else if(pred_score == "expvar_env"){
+    Alist <- lapply(unique(A), function(a) which(A == a))
+    predmat <- matrix(NA, num, length(Alist))
+    mse_env <- function(ind, Xin, Yin){
+      beta <- matrix(coefficients(lm.fit(Xin[ind,,drop=FALSE], Yin[ind])), ncol=1)
+      is_na <- is.na(beta)
+      return(mean((Xin[,!is_na, drop=FALSE] %*% beta[!is_na] - Yin)^2)/mean((Yin-mean(Yin))^2))
+    }
+    for(i in 1:length(Alist)){
+      Xtmp <- X[Alist[[i]],,drop=FALSE]
+      Ytmp <- Y[Alist[[i]]]
+      n <- length(Ytmp)
+      predmat[,i] <- sapply(1:num, function(x)
+        mse_env(sample(1:n, n, replace=TRUE), Xtmp, Ytmp))
+    }
+    return(apply(predmat, 1, min))
+  }
 }
 
 

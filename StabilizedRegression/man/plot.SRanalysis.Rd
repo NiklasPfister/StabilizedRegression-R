@@ -13,7 +13,8 @@
 \item{x_axis}{either "SRdiff" or "SRpred".}
 
 \item{varnames}{vector of variables names given in same ordering
-as columns of X.}
+as columns of X. If NA the variable names saved in the
+SRanalysis object are used.}
 
 \item{labels}{boolean specifying whether to print names for all
 variables with selection probability greater than 0.5. Only

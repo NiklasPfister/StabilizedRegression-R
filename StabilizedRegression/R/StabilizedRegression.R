@@ -21,9 +21,9 @@
 ##'   vector specifying a probablity for each potential set size from
 ##'   1 to \code{m}. \code{compute_predictive_model} (default TRUE)
 ##'   boolean specifying whether to additionally compute SR (pred) and
-##'   SR (diff) as well. \code{prescreen_size} (default NA)
-##'   integer specifying the number of variables to screen down to
-##'   before applying SR, if NA then no screening is
+##'   SR (diff) as well. \code{prescreen_size} (default NA) integer
+##'   specifying the number of variables to screen down to before
+##'   applying SR, if NA then no screening is
 ##'   applied. \code{prescreen_type} (default "correlation") one of
 ##'   the strings "correlation", "ols", "lasso", "deconfounding",
 ##'   "correlation_env", "deconfounding_env" specifying the type of
@@ -36,8 +36,12 @@
 ##'   prediction score. Either "mse" for the mean squared error,
 ##'   "mse_env" for the environment-wise best mean squared error,
 ##'   "aic" for the Akaike information criterion or "bic" for the
-##'   Bayesian information criterion. \code{variable_importance}
-##'   (default "scaled_coefficient") specifies the type of variable
+##'   Bayesian information criterion. code{topk} (default 1) is a
+##'   tuning parameter that can be used to increase the number of
+##'   predictive sets. It should be an integer value, where higher
+##'   values lead to more accepted sets based on the predictive
+##'   cutoff. \code{variable_importance} (default
+##'   "scaled_coefficient") specifies the type of variable
 ##'   ranking. Either "weighted" for a weighted average of all
 ##'   selected subsets, "scaled_coefficient" for a ranking based on
 ##'   the scaled average regression parameter or "permutation" for a
@@ -72,7 +76,7 @@
 ##' X <- cbind(X1, X2)
 ##' A <- as.factor(rep(c(0, 1), each=100))
 ##'
-##' fit_sr <- StabilizedRegression(X, Y, A)
+##' fit_sr <- StabilizedRegression(X, Y, A, pars=list(B=NA))
 ##' fit_lm <- lm(Y ~ X)
 ##'
 ##' print(paste("Coefficients of SR:", toString(coefficients(fit_sr))))
@@ -92,6 +96,7 @@ StabilizedRegression <- function(X, Y, A,
                                            prescreen_type="correlation",
                                            stab_test="exact",
                                            pred_score="mse",
+                                           topk=1,
                                            variable_importance="scaled_coefficient"),
                                  verbose=0,
                                  seed=NA){
@@ -129,6 +134,9 @@ StabilizedRegression <- function(X, Y, A,
   }
   if(!exists("pred_score", pars)){
     pars$pred_score <- "mse"
+  }
+  if (!exists("topk", pars)) {
+    pars$topk <- 1
   }
   if(!exists("variable_importance", pars)){
     pars$variable_importance <- "scaled_coefficient"
@@ -180,7 +188,7 @@ StabilizedRegression <- function(X, Y, A,
     }
     else if(pars$prescreen_type == "correlation"){
       pval <- apply(X, 2, function(x) cor.test(Y, x)$p.value)
-      screened_vars <- order(pval)[1:min(c(pars$prescreen_size, d))]
+      screened_vars <- order(pval)[1:pars$prescreen_size]
     }
     else if(pars$prescreen_type == "correlation_env"){
       Alist <- lapply(unique(A), function(a) which(A == a))
@@ -188,18 +196,18 @@ StabilizedRegression <- function(X, Y, A,
                                              function(Aind)
                                                cor.test(Y[Aind], x[Aind])$p.value))
       pval <- apply(pval, 2, min)
-      screened_vars <- order(pval)[1:min(c(pars$prescreen_size, d))]
+      screened_vars <- order(pval)[1:pars$prescreen_size]
     }
     else if(pars$prescreen_type == "deconfounding"){
       corr_deconf <- abs(deconfounding_correlation(X, Y)[-1])
-      screened_vars <- order(corr_deconf, decreasing=TRUE)[1:min(c(pars$prescreen_size, d))]
+      screened_vars <- order(corr_deconf, decreasing=TRUE)[1:pars$prescreen_size]
     }
     else if(pars$prescreen_type == "deconfounding_env"){
       Alist <- lapply(unique(A), function(a) which(A == a))
       corr_deconf <- sapply(Alist, function(Aind)
         abs(deconfounding_correlation(X[Aind,,drop=FALSE], Y[Aind])[-1]))
       corr_deconf <- apply(corr_deconf, 1, max)
-      screened_vars <- order(corr_deconf, decreasing=TRUE)[1:min(c(pars$prescreen_size, d))]
+      screened_vars <- order(corr_deconf, decreasing=TRUE)[1:pars$prescreen_size]
     }
     else{
       stop("Selected prescreen_type does not exist.")
@@ -210,7 +218,10 @@ StabilizedRegression <- function(X, Y, A,
   }
   m <- min(c(pars$m, length(screened_vars), nrow(X)-1))
 
+
+
   ## Define function for a single iteration
+  Xscreened <- X[,screened_vars]
   single_iteration <- function(S, extra){
     # initialize R6 regressor (linear_regressor)
     regobj <- linear_regressor$new(S=S, pars=regression_pars)
@@ -221,7 +232,7 @@ StabilizedRegression <- function(X, Y, A,
     else{
       ind <- 1:n
     }
-    regobj$fit(X[ind,,drop=FALSE], Y[ind], A[ind], extra)
+    regobj$fit(Xscreened[ind,, drop=FALSE], Y[ind], A[ind], extra)
     return(regobj)
   }
                                    
@@ -235,7 +246,7 @@ StabilizedRegression <- function(X, Y, A,
   if(!is.numeric(pars$B)){
     sets <- list()
     for(i in 1:m){
-      sets <- c(sets, combn(screened_vars, i, simplify=FALSE))
+      sets <- c(sets, combn(1:length(screened_vars), i, simplify=FALSE))
     }
     pars$B <- length(sets)
   }
@@ -270,7 +281,7 @@ StabilizedRegression <- function(X, Y, A,
     # Sample subsets
     sets <- lapply(1:pars$B, function(i){
       set_size <- sample(1:m, 1, prob=pars$set_size_weight)
-      return(sort(sample(screened_vars, set_size)))
+      return(sort(sample(1:length(screened_vars), set_size)))
     })
   }
   sets <- c(list(numeric()), sets)
@@ -282,6 +293,12 @@ StabilizedRegression <- function(X, Y, A,
     print(proc.time()-ptm)
   }
 
+  ## Adjust sets for screening
+  learner_list <- lapply(learner_list,
+                         function(x){
+                           x$S <- screened_vars[x$S]
+                           return(x)
+                         })
 
   ## Compute scores for each weak learner and determine weighting
   ptm <- proc.time()
@@ -319,31 +336,31 @@ StabilizedRegression <- function(X, Y, A,
     weighting_pred[predmods_all] <- 1
     weighting_pred <- weighting_pred/sum(weighting_pred)
   }
-  else if(pars$pred_score[1] %in% c("mse", "mse_env")){
-    if(!(pars$pred_score[2] %in% c("mse", "mse_env"))){
+  else if(pars$pred_score[1] %in% c("mse", "mse_env", "expvar_env")){
+    if(!(pars$pred_score[2] %in% c("mse", "mse_env", "expvar_env"))){
       warning("Combination of prediction score does not seem to be correct!")
     }
     if(pars$use_resampling){
       topk <- 0.1*sum(stabmods)
     }
     else{
-      topk <- 1
+      topk <- min(c(pars$topk, sum(stabmods)))
     }
     bestmod_all <- order(mse_pred, decreasing=FALSE)[1:topk]
     bestmod_stab <- order(mse[stabmods], decreasing=FALSE)[1:topk]
-    cutoff_stab <- Inf
-    cutoff_all <- Inf
+    cutoff_stab <- -Inf
+    cutoff_all <- -Inf
     for(k in 1:topk){
       # All models
       Xtmp <- X[,learner_list[[bestmod_all[k]]]$S,drop=FALSE]
       bootstrap_all <- bootstrap_mse(Y, cbind(rep(1, nrow(Xtmp)), Xtmp), A, numB,
                                      pars$pred_score[2])
-      cutoff_all <- min(c(quantile(bootstrap_all, 1-pars$alpha_pred), cutoff_all))
+      cutoff_all <- max(c(quantile(bootstrap_all, 1-pars$alpha_pred), cutoff_all))
       # Stable models
       Xtmp <- X[,learner_list[stabmods][[bestmod_stab[k]]]$S,drop=FALSE]
       bootstrap_stab <- bootstrap_mse(Y, cbind(rep(1, nrow(Xtmp)), Xtmp), A, numB,
                                       pars$pred_score[1])
-      cutoff_stab <- min(c(quantile(bootstrap_stab, 1-pars$alpha_pred), cutoff_stab))
+      cutoff_stab <- max(c(quantile(bootstrap_stab, 1-pars$alpha_pred), cutoff_stab))
     }
     predmods_all <- mse_pred <= cutoff_all
     predmods_stab <- mse <= cutoff_stab
