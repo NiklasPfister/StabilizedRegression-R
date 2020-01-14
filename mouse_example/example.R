@@ -36,6 +36,10 @@ load("data/pathway_info.Rda")
 ## plot(fit_obj, x_axis="SRpred", varnames=colnames(X), labels=TRUE)
 
 ### EVAN example
+library(StabilizedRegression)
+
+## Load data
+load("data/pathway_info.Rda")
 library(ggplot2)
 load("data/reduced_data.Rda")
 Xmat <- data_reduced$Xmat
@@ -54,19 +58,28 @@ Ymat = Xmat[,colnames(Xmat) %in% TargetPathway]
 Y=rowMeans(Ymat)
 
 ## Fix parameters
-cores <- 50
+cores <- 3
 pars <- list(m=6,
-             B=5000,
+             B=500,
              alpha_stab=0.1,
-             alpha_pred=0.01,
+             alpha_pred=0.9,
              size_weight="linear",
-             prescreen_size=50,
+             prescreen_size=10,
              use_resampling=FALSE,
              stab_test="exact",
-             variable_importance="weighted")
+             pred_score="mse",
+             topk=1,
+             variable_importance="scaled_coefficient",
+             verbose=1)
 
-fit_obj <- SRanalysis(X, Y, A, 1,
+ptm <- proc.time()
+fit_obj <- SRanalysis(X, Y, A, 10,
                       pars_SR=pars, cores=cores)
+print(proc.time()-ptm)
+
+set.seed(1)
+#screened_vars <- order(abs(cor(X, Y)), decreasing=TRUE)[1:15]
+fit <- StabilizedRegression(X, Y, A, pars, verbose=2)
 
 plot_obj <- plot(fit_obj, x_axis="SRdiff", varnames=colnames(X), labels=TRUE)
 ggsave("plot_res.pdf", plot_obj)

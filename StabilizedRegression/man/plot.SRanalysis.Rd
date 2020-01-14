@@ -4,8 +4,7 @@
 \alias{plot.SRanalysis}
 \title{plot function}
 \usage{
-\method{plot}{SRanalysis}(x, x_axis = "SRdiff", varnames = NA,
-  labels = FALSE, ...)
+\method{plot}{SRanalysis}(x, x_axis = "SRdiff", varnames = NA, labels = FALSE, ...)
 }
 \arguments{
 \item{x}{object of class 'SRanalysis'.}
@@ -23,7 +22,8 @@ works if varnames has been given.}
 \item{...}{arguments to be passed to or from other methods.}
 }
 \description{
-Plot functions for 'SRanalysis' objects.
+Plot functions for 'SRanalysis' objects. Allows to visualize the
+stability and predictiveness trade-off of individual predictors.
 }
 \author{
 Niklas Pfister

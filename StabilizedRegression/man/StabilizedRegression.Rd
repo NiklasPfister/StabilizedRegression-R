@@ -4,12 +4,17 @@
 \alias{StabilizedRegression}
 \title{StabilizedRegression}
 \usage{
-StabilizedRegression(X, Y, A, pars = list(m = ncol(X), B = 100,
-  alpha_stab = 0.05, alpha_pred = 0.05, size_weight = "linear",
-  compute_predictive_model = TRUE, use_resampling = FALSE, prescreen_size =
-  NA, prescreen_type = "correlation", stab_test = "exact", pred_score =
-  "mse", topk = 1, variable_importance = "scaled_coefficient"),
-  verbose = 0, seed = NA)
+StabilizedRegression(
+  X,
+  Y,
+  A,
+  pars = list(m = ncol(X), B = 100, alpha_stab = 0.05, alpha_pred = 0.05, size_weight =
+    "linear", compute_predictive_model = TRUE, use_resampling = FALSE, prescreen_size =
+    NA, prescreen_type = "correlation", stab_test = "exact", pred_score = "mse", topk = 1,
+    variable_importance = "scaled_coefficient"),
+  verbose = 0,
+  seed = NA
+)
 }
 \arguments{
 \item{X}{predictor matrix. Numeric matrix of size n times d, where
@@ -67,8 +72,8 @@ and diagnostic plots.}
 Object of class 'StabilizedRegression' consisting of the following
   elements
 
-\item{learner_list}{List of all fitted linear OLS regressions.}
-\item{weighting}{Weighting of the individual regressions in SR}
+\item{learner_list}{List of all fitted linear OLS regressions (fitted R6 'linear_regression' objects).}
+\item{weighting}{Weighting of the individual regressions in SR.}
 \item{weighting_pred}{Weighting of the individual regressions in SR (pred). Only computed if compute_predictive_model is TRUE.}
 \item{variable_importance}{Variable importance measure for all predictors based on SR.}
 \item{variable_importance_pred}{Variable importance measure for all predictors based on SR (pred). Only computed if compute_predictive_model is TRUE.}
@@ -98,6 +103,11 @@ fit_lm <- lm(Y ~ X)
 print(paste("Coefficients of SR:", toString(coefficients(fit_sr))))
 print(paste("Coefficients of SR (pred):", toString(coefficients(fit_sr, predictive_model=TRUE))))
 print(paste("Coefficients of OLS:", toString(coefficients(fit_lm))))
+}
+\references{
+Pfister, N., E. Williams, R. Aebersold, J. Peters and
+  P. B{\"u}hlmann (2019). Stabilizing Variable Selection and
+  Regression. arXiv preprint arXiv:1911.01850.
 }
 \author{
 Niklas Pfister

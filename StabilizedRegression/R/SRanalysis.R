@@ -1,4 +1,6 @@
-##' Stability analysis based on stabilized regression
+##' Stability analysis based on stabilized regression used to analyze
+##' the trade-off between stability and predictivness of individual
+##' predictors.
 ##'
 ##' This function performs two version of StabilizedRegression: SR
 ##' which selects a stable and predictive model and SRpred which fits
@@ -47,6 +49,10 @@
 ##'
 ##' @import stats utils MASS R6
 ##'
+##' @references Pfister, N., E. Williams, R. Aebersold, J. Peters and
+##'   P. B{\"u}hlmann (2019). Stabilizing Variable Selection and
+##'   Regression. arXiv preprint arXiv:1911.01850.
+##'
 ##' @author Niklas Pfister
 ##'
 ##' @examples
@@ -62,7 +68,7 @@
 ##' obj <- SRanalysis(X, Y, A, 10,
 ##'                   pars_SR=list(B=NA))
 ##' plot(obj)
-##' print(obj$results)
+##' print(obj$results, varnames = c("X1", "X2"), labels=TRUE)
 
 
 SRanalysis <- function(X, Y, A,

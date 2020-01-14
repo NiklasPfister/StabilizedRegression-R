@@ -1,7 +1,7 @@
 ##' Learn a network model for a collection of variables.
 ##'
 ##' Uses StabilizedRegression, Lasso or correlation to construct a
-##' node-wise network between variables.
+##' node-wise network between all variables in X.
 ##' @title Learn network model
 ##' @param X data matrix. Numeric matrix of size n times d, where
 ##'   columns correspond to individual variables.

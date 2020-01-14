@@ -4,8 +4,7 @@
 \alias{coef.StabilizedRegression}
 \title{coefficients function}
 \usage{
-\method{coef}{StabilizedRegression}(object, predictive_model = FALSE,
-  ...)
+\method{coef}{StabilizedRegression}(object, predictive_model = FALSE, ...)
 }
 \arguments{
 \item{object}{object of class 'StabilizedRegression'.}

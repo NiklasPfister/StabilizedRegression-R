@@ -4,13 +4,21 @@
 \alias{SRanalysis}
 \title{Stability analysis}
 \usage{
-SRanalysis(X, Y, A, num_reps = 100, pred_scores = c("mse", "mse_env"),
+SRanalysis(
+  X,
+  Y,
+  A,
+  num_reps = 100,
+  pred_scores = c("mse", "mse_env"),
   prescreen_types = c("correlation", "correlation_env"),
-  pars_SR = list(m = ncol(X), B = 100, alpha_stab = 0.05, alpha_pred =
-  0.05, size_weight = "linear", use_resampling = FALSE, prescreen_size =
-  nrow(X) - 1, stab_test = "exact", variable_importance =
-  "scaled_coefficient"), threshold = 0, cores = 1, verbose = 0,
-  seed = NA)
+  pars_SR = list(m = ncol(X), B = 100, alpha_stab = 0.05, alpha_pred = 0.05, size_weight
+    = "linear", use_resampling = FALSE, prescreen_size = nrow(X) - 1, stab_test = "exact",
+    variable_importance = "scaled_coefficient"),
+  threshold = 0,
+  cores = 1,
+  verbose = 0,
+  seed = NA
+)
 }
 \arguments{
 \item{X}{predictor matrix. Numeric matrix of size n times d, where
@@ -53,7 +61,9 @@ Object of class 'SRanalysis' consisting of the following
 \item{beta_pred}{Vector of average coefficient signs for SRpred}
 }
 \description{
-Stability analysis based on stabilized regression
+Stability analysis based on stabilized regression used to analyze
+the trade-off between stability and predictivness of individual
+predictors.
 }
 \details{
 This function performs two version of StabilizedRegression: SR
@@ -83,7 +93,12 @@ A <- as.factor(rep(c(0, 1), each=100))
 obj <- SRanalysis(X, Y, A, 10,
                   pars_SR=list(B=NA))
 plot(obj)
-print(obj$results)
+print(obj$results, varnames = c("X1", "X2"), labels=TRUE)
+}
+\references{
+Pfister, N., E. Williams, R. Aebersold, J. Peters and
+  P. B{\"u}hlmann (2019). Stabilizing Variable Selection and
+  Regression. arXiv preprint arXiv:1911.01850.
 }
 \author{
 Niklas Pfister

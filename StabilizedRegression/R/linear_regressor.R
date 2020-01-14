@@ -1,4 +1,19 @@
-##' Implementation of linear OLS regressor as R6Class.
+##' R6 Class Representing a Linear Regression
+##'
+##' @description An R6-class for linear regression that can be used
+##'   within the StabilizedRegression framework.
+##'
+##'   Currently this is the regression procedure that has been
+##'   implemented. In order to extend the StabilizedRegression
+##'   framework to a different regression procedure a custom R6-class
+##'   with the same structure as this function can be written and used
+##'   within StabilizedRegression.
+##'
+##' @details Constructer method initializes a linear regression object
+##'   specifying on which subset of variables \code{S} to fit the
+##'   regression and which type of stability test and prediction score
+##'   to compute. The methods \code{fit()} and \code{predict()} can be
+##'   applied to the object to fit and predict, respectively.
 ##'
 ##' @export
 ##' 
@@ -6,38 +21,53 @@
 ##'
 ##' @author Niklas Pfister
 
-## \item{estimator}{Estimator object. OLS regreession coefficient beta fitted only on the variables from set S.}
-## \item{S}{Set of variables used in the estimator.}
-## \item{scores}{Stability and prediction score. Depends on the parameters pars from initialization function.}
-## \item{fit}{Function taking arguments X and Y and fits OLS estimator.}
-## \item{predict}{Function taking argument X and outputs prediction of estimator.}
-
 
 linear_regressor <- R6Class("linear_regressor",
                             public = list(
+                              #' @field estimator Numeric vector of
+                              #' regression coefficients.
                               estimator = numeric(),
+                              #' @field S Numeric vector specifying
+                              #' the subset of variables to perform
+                              #' regression on.
                               S = numeric(),
+                              #' @field scores Numeric vector of
+                              #' fitted stability and prediction scores.
                               scores = numeric(),
+                              #' @field pars List specifying the
+                              #' stability test via \code{test} and
+                              #' prediction score via \code{pred_score}.
                               pars = list(),
-                              initialize = function(estimator=numeric(), S=numeric(),
-                                                    scores=numeric(),
+                              #' @description
+                              #' Create a new linear_regression object.
+                              #' @param S Subset of variables.
+                              #' @param pars Parameters.
+                              #' @return A new `linear_regression` object.
+                              initialize = function(S=numeric(),
                                                     pars=list(test="mean",
-                                                              pred_score=c("mse", "mse"))){
-                                self$estimator=estimator
+                                                              pred_score=c("mse",
+                                                                           "mse"))){
                                 self$S=S
-                                self$scores=scores
                                 if(length(pars$test) == 0){
                                   pars$test <- "mean"
                                   pars$pred_score=c("mse", "mse")
                                 }
                                 self$pars=pars
                               },
+                              #' @description
+                              #' Fit a 'linear_regression' object on data.
+                              #' @param X Predictor matrix.
+                              #' @param Y response vector.
+                              #' @param A environemnt indicator.
+                              #' @param extra not required (placeholder)
+                              #' @return A fitted `linear_regression` object.
                               fit = function(X, Y, A, extra=NA){
                                 ## Pooled estimator
                                 X <- cbind(rep(1, nrow(X)), X[, self$S, drop=FALSE])
                                 Alist <- lapply(unique(A), function(a) which(A == a))
                                 res <- getpval(Y, X, Alist, test=self$pars$test,
-                                               pred_score=self$pars$pred_score, extra=extra)
+                                               pred_score=self$pars$pred_score,
+                                               extra=extra)
                                 self$estimator <- matrix(res$coefficients, ncol=1)
                                 # make sure no sigularities occured
                                 if(sum(is.na(self$estimator))>0){
@@ -47,6 +77,10 @@ linear_regressor <- R6Class("linear_regressor",
                                 }
                                 self$scores <- c(res$pval, res$pred_score)
                               },
+                              #' @description
+                              #' Predict using a fitted 'linear_regression' object.
+                              #' @param X Predictor matrix on which to predict response.
+                              #' @return Numeric vector of predicted response.
                               predict = function(X){
                                 X <- cbind(rep(1, nrow(X)), X[, self$S, drop=FALSE])
                                 invisible(X %*% self$estimator)
@@ -72,7 +106,9 @@ getpval <- function(Y, X, Alist, maxNoObs=1000,
     }
     else if(pred_score[i] == "expvar_env"){
       predscore[i] <- min(sapply(Alist, function(Aind)
-        mean(residuals(lm.fit(X[Aind,,drop=FALSE], Y[Aind]))^2)/mean((Y[Aind]-mean(Y[Aind]))^2)))
+        mean(residuals(
+          lm.fit(X[Aind,,drop=FALSE],
+                 Y[Aind]))^2)/mean((Y[Aind]-mean(Y[Aind]))^2)))
     }
     else if(pred_score[i] == "aic"){
       predscore[i] <- extractAIC(linm, k=2)[2]
@@ -142,12 +178,14 @@ getpval <- function(Y, X, Alist, maxNoObs=1000,
     stab_score <- sum(sapply(R.scaled, function(res) resample_fn(res)))
     stab_scores_null <- sapply(1:100,
                                function(i)
-                                 sum(sapply(1:length(Alist),
-                                            function(k){
-                                              res <- rnorm(n)
-                                              res <- res - Projections[[k]] %*% res[Alist[[k]]]
-                                              return(resample_fn(res))
-                                            })))
+                                 sum(
+                                   sapply(
+                                     1:length(Alist),
+                                     function(k){
+                                       res <- rnorm(n)
+                                       res <- res - Projections[[k]] %*% res[Alist[[k]]]
+                                       return(resample_fn(res))
+                                     })))
     pval <- (sum(stab_scores_null>=stab_score)+1)/(length(stab_scores_null)+1)
   }
   else if(test == "meanvar_sres"){

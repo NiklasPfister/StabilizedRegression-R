@@ -1,4 +1,5 @@
-##' Plot functions for 'SRanalysis' objects.
+##' Plot functions for 'SRanalysis' objects. Allows to visualize the
+##' stability and predictiveness trade-off of individual predictors.
 ##'
 ##' @title plot function
 ##' @param x object of class 'SRanalysis'.

@@ -4,13 +4,20 @@
 \alias{learn_network}
 \title{Learn network model}
 \usage{
-learn_network(X, A = NA, method = "correlation",
-  resampling_method = "stability_selection", numB = 100, cutoff = 0,
-  pars = list(m = ncol(X), B = NA, alpha_stab = 0.05, alpha_pred = 0.05,
-  size_weight = "linear", use_resampling = FALSE, prescreen_size = nrow(X)
-  - 1, prescreen_type = "correlation", stab_test = "exact", pred_score =
-  "mse", variable_importance = "scaled_coefficient"), verbose = 0,
-  cores = 1)
+learn_network(
+  X,
+  A = NA,
+  method = "correlation",
+  resampling_method = "stability_selection",
+  numB = 100,
+  cutoff = 0,
+  pars = list(m = ncol(X), B = NA, alpha_stab = 0.05, alpha_pred = 0.05, size_weight =
+    "linear", use_resampling = FALSE, prescreen_size = nrow(X) - 1, prescreen_type =
+    "correlation", stab_test = "exact", pred_score = "mse", variable_importance =
+    "scaled_coefficient"),
+  verbose = 0,
+  cores = 1
+)
 }
 \arguments{
 \item{X}{data matrix. Numeric matrix of size n times d, where
@@ -58,7 +65,7 @@ Learn a network model for a collection of variables.
 }
 \details{
 Uses StabilizedRegression, Lasso or correlation to construct a
-node-wise network between variables.
+node-wise network between all variables in X.
 }
 \examples{
 ## Example

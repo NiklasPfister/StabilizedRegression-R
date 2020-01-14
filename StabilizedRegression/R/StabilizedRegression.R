@@ -53,8 +53,8 @@
 ##' @return Object of class 'StabilizedRegression' consisting of the following
 ##'   elements
 ##'
-##' \item{learner_list}{List of all fitted linear OLS regressions.}
-##' \item{weighting}{Weighting of the individual regressions in SR}
+##' \item{learner_list}{List of all fitted linear OLS regressions (fitted R6 'linear_regression' objects).}
+##' \item{weighting}{Weighting of the individual regressions in SR.}
 ##' \item{weighting_pred}{Weighting of the individual regressions in SR (pred). Only computed if compute_predictive_model is TRUE.}
 ##' \item{variable_importance}{Variable importance measure for all predictors based on SR.}
 ##' \item{variable_importance_pred}{Variable importance measure for all predictors based on SR (pred). Only computed if compute_predictive_model is TRUE.}
@@ -63,6 +63,10 @@
 ##' @export
 ##'
 ##' @import stats utils MASS R6 graphics grDevices
+##'
+##' @references Pfister, N., E. Williams, R. Aebersold, J. Peters and
+##'   P. B{\"u}hlmann (2019). Stabilizing Variable Selection and
+##'   Regression. arXiv preprint arXiv:1911.01850.
 ##'
 ##' @author Niklas Pfister
 ##'

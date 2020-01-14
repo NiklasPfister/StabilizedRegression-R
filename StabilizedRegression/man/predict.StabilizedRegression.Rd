@@ -4,8 +4,7 @@
 \alias{predict.StabilizedRegression}
 \title{predict function}
 \usage{
-\method{predict}{StabilizedRegression}(object, newdata,
-  predictive_model = FALSE, ...)
+\method{predict}{StabilizedRegression}(object, newdata, predictive_model = FALSE, ...)
 }
 \arguments{
 \item{object}{object of class 'StabilizedRegression'.}
