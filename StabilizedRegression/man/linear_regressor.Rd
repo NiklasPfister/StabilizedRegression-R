@@ -4,10 +4,10 @@
 \alias{linear_regressor}
 \title{R6 Class Representing a Linear Regression}
 \description{
-An R6-class for linear regression that can be used
+An R6-class for linear regression that is used
   within the StabilizedRegression framework.
 
-  Currently this is the regression procedure that has been
+  Currently this is the only regression procedure that has been
   implemented. In order to extend the StabilizedRegression
   framework to a different regression procedure a custom R6-class
   with the same structure as this function can be written and used
@@ -78,7 +78,8 @@ A new `linear_regression` object.
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-fit"></a>}}
 \subsection{Method \code{fit()}}{
-Fit a 'linear_regression' object on data.
+Fit a 'linear_regression' object on data
+and computes the stability and prediction scores.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{linear_regressor$fit(X, Y, A, extra = NA)}\if{html}{\out{</div>}}
 }

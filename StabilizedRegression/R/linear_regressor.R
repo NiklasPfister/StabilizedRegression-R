@@ -1,9 +1,9 @@
 ##' R6 Class Representing a Linear Regression
 ##'
-##' @description An R6-class for linear regression that can be used
+##' @description An R6-class for linear regression that is used
 ##'   within the StabilizedRegression framework.
 ##'
-##'   Currently this is the regression procedure that has been
+##'   Currently this is the only regression procedure that has been
 ##'   implemented. In order to extend the StabilizedRegression
 ##'   framework to a different regression procedure a custom R6-class
 ##'   with the same structure as this function can be written and used
@@ -55,7 +55,8 @@ linear_regressor <- R6Class("linear_regressor",
                                 self$pars=pars
                               },
                               #' @description
-                              #' Fit a 'linear_regression' object on data.
+                              #' Fit a 'linear_regression' object on data
+                              #' and computes the stability and prediction scores.                              
                               #' @param X Predictor matrix.
                               #' @param Y response vector.
                               #' @param A environemnt indicator.

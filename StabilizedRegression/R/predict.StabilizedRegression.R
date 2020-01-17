@@ -4,7 +4,8 @@
 ##' @param object object of class 'StabilizedRegression'.
 ##' @param newdata matrix or data.frame for which the response should
 ##'   be predicted.
-##' @param predictive_model boolean specifying whether to use the
+##' @param predictive_model boolean. If \code{TRUE} the model SR
+##'   (pred) is used to predict, if \code{FALSE} the model SR is used.
 ##' @param ... additional arguments affecting the prediction produced.
 ##'
 ##' @author Niklas Pfister
