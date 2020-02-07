@@ -31,7 +31,7 @@ size. \code{B} (default 100) integer specifying the number of
 random subsets to sample, if NA all subsets will be
 used. \code{alpha_stab} (default 0.05) value between 0 and 1
 specifiying the stability cutoff. \code{alpha_pred} (default
-0.05) value between 0 and 1 specifiying the stability
+0.05) value between 0 and 1 specifiying the predictive
 cutoff. \code{size_weight} (default "linear") one of the strings
 "linear", "constant", "quadratic", "rbf" or numeric weight
 vector specifying a probablity for each potential set size from
@@ -52,7 +52,7 @@ residuals. \code{pred_score} (default "mse") specifies the
 prediction score. Either "mse" for the mean squared error,
 "mse_env" for the environment-wise best mean squared error,
 "aic" for the Akaike information criterion or "bic" for the
-Bayesian information criterion. code{topk} (default 1) is a
+Bayesian information criterion. \code{topk} (default 1) is a
 tuning parameter that can be used to increase the number of
 predictive sets. It should be an integer value, where higher
 values lead to more accepted sets based on the predictive

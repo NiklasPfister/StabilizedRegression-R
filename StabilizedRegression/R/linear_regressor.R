@@ -226,6 +226,9 @@ getpval <- function(Y, X, Alist, maxNoObs=1000,
     pval <- min(c(1,
     (rowSums(stab_scores_null >= stab_scores)+1)/(ncol(stab_scores_null)+1)*2))
   }
+  else if(test == "none"){
+    pval <- 1
+  }
   else{
     stop(paste("Stability test", test, "does not exist."))
   }

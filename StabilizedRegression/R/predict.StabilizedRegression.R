@@ -26,12 +26,12 @@ predict.StabilizedRegression <- function(object, newdata, predictive_model=FALSE
     weighting <- object$weighting_pred
   }
   
-  ## Aggregate predictions either using averages or majority vote
+  ## Aggregate predictions using averages
   Ypred <- rep(0, nrow(newdata))
   non_zeros <- which(weighting>0)
   for(i in 1:length(non_zeros)){
     w <- weighting[non_zeros[i]]
-    regobj <- object$regressor$new()
+    regobj <- linear_regressor$new()
     regobj$estimator <- object$learner_list[[non_zeros[i]]]$estimator
     regobj$S <- object$learner_list[[non_zeros[i]]]$S
     Ypred <- Ypred + w * regobj$predict(newdata)

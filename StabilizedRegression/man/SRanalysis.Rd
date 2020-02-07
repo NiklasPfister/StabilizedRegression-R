@@ -12,7 +12,7 @@ SRanalysis(
   pred_scores = c("mse", "mse_env"),
   prescreen_types = c("correlation", "correlation_env"),
   pars_SR = list(m = ncol(X), B = 100, alpha_stab = 0.05, alpha_pred = 0.05, size_weight
-    = "linear", use_resampling = FALSE, prescreen_size = nrow(X) - 1, stab_test = "exact",
+    = "linear", use_resampling = FALSE, prescreen_size = NA, stab_test = "exact",
     variable_importance = "scaled_coefficient"),
   threshold = 0,
   cores = 1,

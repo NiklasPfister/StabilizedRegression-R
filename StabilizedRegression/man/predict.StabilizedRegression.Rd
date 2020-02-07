@@ -12,8 +12,8 @@
 \item{newdata}{matrix or data.frame for which the response should
 be predicted.}
 
-\item{predictive_model}{boolean. If TRUE SR (pred) is used to
-predict, if FALSE SR is used.}
+\item{predictive_model}{boolean. If \code{TRUE} the model SR
+(pred) is used to predict, if \code{FALSE} the model SR is used.}
 
 \item{...}{additional arguments affecting the prediction produced.}
 }
