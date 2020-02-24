@@ -9,7 +9,7 @@
 ##'   SRanalysis object are used.
 ##' @param labels boolean specifying whether to print names for all
 ##'   variables with selection probability greater than 0.5. Only
-##'   works if varnames has been given.
+##'   works if varnames has been specified.
 ##' @param ... arguments to be passed to or from other methods.
 ##'
 ##' @import ggplot2 ggrepel
@@ -37,7 +37,7 @@ plot.SRanalysis <- function(x, x_axis="SRdiff", varnames=NA, labels=FALSE, ...){
   else{
     stop("x_axis needs to be either SRpred or SRdiff")
   }
-  beta_sign <- x$beta_stab[-1]
+  beta_sign <- x$avgcoefsign_SR[-1]
   if(length(varnames) != length(sp_stab)){
     if(is.na(varnames[1])){
       varnames <- x$varnames
@@ -60,7 +60,7 @@ plot.SRanalysis <- function(x, x_axis="SRdiff", varnames=NA, labels=FALSE, ...){
                              fill=rgb(0,1,0), alpha=0.2)
   splot <- splot + geom_point(data=df, aes(x=sp_pred, y=sp_stab, color=beta_sign),
                               cex=1.5)
-  splot <- splot + scale_color_gradient(low = "red", high = "black")
+  splot <- splot + scale_color_gradient(low = "red", high = "black", limits=c(0,1))
   if(labels){
     splot <- splot + geom_text_repel(data=df, aes(x=sp_pred, y=sp_stab,
                                                   label=ifelse((sp_pred > 0.5 |

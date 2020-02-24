@@ -42,8 +42,8 @@
 ##'
 ##' \item{results}{List of stability selection results for for SR, SRpred and SRdiff.}
 ##' \item{varnames}{Vector of variable names taken from the column names of X.}
-##' \item{beta_stab}{Vector of average coefficient signs for SR}
-##' \item{beta_pred}{Vector of average coefficient signs for SRpred}
+##' \item{avgcoefsign_SR}{Vector of average coefficient signs for SR}
+##' \item{avgcoefsign_SRpred}{Vector of average coefficient signs for SRpred}
 ##' 
 ##' @export
 ##'
@@ -67,8 +67,8 @@
 ##'
 ##' obj <- SRanalysis(X, Y, A, 10,
 ##'                   pars_SR=list(B=NA))
-##' plot(obj)
-##' print(obj$results, varnames = c("X1", "X2"), labels=TRUE)
+##' plot(obj, varnames = c("X1", "X2"), labels=TRUE)
+##' print(obj$results)
 
 
 SRanalysis <- function(X, Y, A,
@@ -196,17 +196,17 @@ SRanalysis <- function(X, Y, A,
 
   ## Compute average coefficient sign
   betamat_pred <- sapply(resample_res, function(x) sign(x$beta_pred))
-  beta_pred <- apply(betamat_pred, 1,
-                     function(x) mean(x[x != 0]==1))
+  avgcoefsign_SRpred <- apply(betamat_pred, 1,
+                              function(x) ifelse(sum(x != 0) == 0, 0.5, mean(x[x != 0]==1)))
   betamat_stab <- sapply(resample_res, function(x) sign(x$beta_stab))
-  beta_stab <- apply(betamat_stab, 1,
-                     function(x) mean(x[x != 0]==1))
+  avgcoefsign_SR <- apply(betamat_stab, 1,
+                          function(x) ifelse(sum(x != 0) == 0, 0.5, mean(x[x != 0]==1)))
 
   ## Collect results
   res <- list(results=results,
               varnames=colnames(X),
-              beta_pred=beta_pred,
-              beta_stab=beta_stab)
+              avgcoefsign_SR=avgcoefsign_SR,
+              avgcoefsign_SRpred=avgcoefsign_SRpred)
   class(res) <- "SRanalysis"
   
   

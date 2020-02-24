@@ -17,7 +17,7 @@ SRanalysis object are used.}
 
 \item{labels}{boolean specifying whether to print names for all
 variables with selection probability greater than 0.5. Only
-works if varnames has been given.}
+works if varnames has been specified.}
 
 \item{...}{arguments to be passed to or from other methods.}
 }

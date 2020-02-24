@@ -57,8 +57,8 @@ Object of class 'SRanalysis' consisting of the following
 
 \item{results}{List of stability selection results for for SR, SRpred and SRdiff.}
 \item{varnames}{Vector of variable names taken from the column names of X.}
-\item{beta_stab}{Vector of average coefficient signs for SR}
-\item{beta_pred}{Vector of average coefficient signs for SRpred}
+\item{avgcoefsign_SR}{Vector of average coefficient signs for SR}
+\item{avgcoefsign_SRpred}{Vector of average coefficient signs for SRpred}
 }
 \description{
 Stability analysis based on stabilized regression used to analyze
@@ -92,8 +92,8 @@ A <- as.factor(rep(c(0, 1), each=100))
 
 obj <- SRanalysis(X, Y, A, 10,
                   pars_SR=list(B=NA))
-plot(obj)
-print(obj$results, varnames = c("X1", "X2"), labels=TRUE)
+plot(obj, varnames = c("X1", "X2"), labels=TRUE)
+print(obj$results)
 }
 \references{
 Pfister, N., E. Williams, R. Aebersold, J. Peters and
