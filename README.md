@@ -29,5 +29,3 @@ The diagnostic plots can be created by using the function SRanalysis(). This wil
 help(SRanalysis)
 example(SRanalysis)
 ```
-
-To try out the package on the mouse data, run the example in mouse_example/example.R.
