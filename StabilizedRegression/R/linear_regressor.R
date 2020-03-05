@@ -171,8 +171,8 @@ getpval <- function(Y, X, Alist, maxNoObs=1000,
     resample_fn <- function(res){
       meanvec <- sapply(Alist, function(Aind) mean(res[Aind]))
       statfun_mean <- function(i, j){
-        T <- abs(meanvec[i] - meanvec[j])
-        return(T)
+        T0 <- abs(meanvec[i] - meanvec[j])
+        return(T0)
       }
       return(sum(mapply(statfun_mean, pairwise[, 1], pairwise[, 2])))
     }
@@ -208,8 +208,8 @@ getpval <- function(Y, X, Alist, maxNoObs=1000,
     resample_fn <- function(res){
       momvec <- sapply(Alist, function(Aind) c(mean(res[Aind]), var(res[Aind])))
       statfun <- function(i, j){
-        T <- abs(momvec[,i] - momvec[,j])*(Aweights[i]*Aweights[j])
-        return(T)
+        T0 <- abs(momvec[,i] - momvec[,j])*(Aweights[i]*Aweights[j])
+        return(T0)
       }
       return(rowSums(mapply(statfun, pairwise[, 1], pairwise[, 2])))
     }

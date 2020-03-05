@@ -179,7 +179,7 @@ SRanalysis <- function(X, Y, A,
     for(k in 1:nrow(vs_score)){
       tmpvec <- order(vs_score[k,], decreasing=TRUE)
       num_select <- min(c(sum(vs_score[k,] > threshold),
-                          floor(sqrt(ncol(vs_score)*0.5*1))), na.rm=T)
+                          floor(sqrt(ncol(vs_score)*0.5*1))), na.rm=TRUE)
       selection_ind[k, tmpvec[1:num_select]] <- TRUE
     }
     selection_probs <- colMeans(selection_ind)
