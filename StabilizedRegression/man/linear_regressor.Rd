@@ -45,14 +45,15 @@ prediction score via \code{pred_score}.}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{linear_regressor$new()}}
-\item \href{#method-fit}{\code{linear_regressor$fit()}}
-\item \href{#method-predict}{\code{linear_regressor$predict()}}
-\item \href{#method-clone}{\code{linear_regressor$clone()}}
+\item \href{#method-linear_regressor-new}{\code{linear_regressor$new()}}
+\item \href{#method-linear_regressor-fit}{\code{linear_regressor$fit()}}
+\item \href{#method-linear_regressor-predict}{\code{linear_regressor$predict()}}
+\item \href{#method-linear_regressor-clone}{\code{linear_regressor$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
+\if{html}{\out{<a id="method-linear_regressor-new"></a>}}
+\if{latex}{\out{\hypertarget{method-linear_regressor-new}{}}}
 \subsection{Method \code{new()}}{
 Create a new linear_regression object.
 \subsection{Usage}{
@@ -76,7 +77,8 @@ A new `linear_regression` object.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-fit"></a>}}
+\if{html}{\out{<a id="method-linear_regressor-fit"></a>}}
+\if{latex}{\out{\hypertarget{method-linear_regressor-fit}{}}}
 \subsection{Method \code{fit()}}{
 Fit a 'linear_regression' object on data
 and computes the stability and prediction scores.
@@ -102,7 +104,8 @@ A fitted `linear_regression` object.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-predict"></a>}}
+\if{html}{\out{<a id="method-linear_regressor-predict"></a>}}
+\if{latex}{\out{\hypertarget{method-linear_regressor-predict}{}}}
 \subsection{Method \code{predict()}}{
 Predict using a fitted 'linear_regression' object.
 \subsection{Usage}{
@@ -121,7 +124,8 @@ Numeric vector of predicted response.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
+\if{html}{\out{<a id="method-linear_regressor-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-linear_regressor-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

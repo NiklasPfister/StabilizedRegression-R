@@ -5,14 +5,14 @@ multi-environment regression. Analyzes the functional dependence of
 the response on a set of predictors and assess whether this functional
 relationship remains stable or unstable across different environments.
 
-N. Pfister, E. G. Williams, J. Peters, R. Aebersold, P. Bühlmann: Stabilizing Variable Selection and Regression. ArXiv preprint: 1911.01850. [https://arxiv.org/abs/1911.01850](https://arxiv.org/abs/1911.01850)
+N. Pfister, E. Williams, R. Aebersold, P. Bühlmann: *Stabilizing Variable Selection and Regression*. Annals of Applied Statistics, 15(3):1220-1246. [https://doi.org/10.1214/21-AOAS1487](https://doi.org/10.1214/21-AOAS1487)
+
 
 ## Getting started
 
-Clone this repository. Then, the package can be installed and loaded with the following commands:
-
+The package is available on CRAN. To install and load the package use the following command:
 ```R
-install.packages("PATHTOPACKAGE/StabilizedRegression_1.0.tar.gz")
+install.packages(StabilizedRegression)
 library(StabilizedRegression)
 ```
 

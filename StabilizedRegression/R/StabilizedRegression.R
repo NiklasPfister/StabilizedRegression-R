@@ -171,6 +171,12 @@ StabilizedRegression <- function(X, Y, A,
   }
   regression_pars <- list(test=pars$stab_test,
                           pred_score=pars$pred_score)
+  
+  ## Remove row and column names as these can cause matching issues
+  X <- unname(X)
+  A <- unname(A)
+  Y <- unname(Y)
+  
 
   ## Prescreen
   if(is.numeric(pars$prescreen_size)){

@@ -23,7 +23,9 @@ works if varnames has been specified.}
 }
 \description{
 Plot functions for 'SRanalysis' objects. Allows to visualize the
-stability and predictiveness trade-off of individual predictors.
+stability and predictiveness trade-off of individual
+predictors. Green area corresponds to area for which stability
+selection bounds the false discovery rate (FDR) by 1.
 }
 \author{
 Niklas Pfister

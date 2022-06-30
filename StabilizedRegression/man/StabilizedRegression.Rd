@@ -10,8 +10,8 @@ StabilizedRegression(
   A,
   pars = list(m = ncol(X), B = 100, alpha_stab = 0.05, alpha_pred = 0.05, size_weight =
     "linear", compute_predictive_model = TRUE, use_resampling = FALSE, prescreen_size =
-    NA, prescreen_type = "correlation", stab_test = "exact", pred_score = "mse", topk = 1,
-    variable_importance = "scaled_coefficient"),
+    NA, prescreen_type = "correlation", stab_test = "exact", pred_score = "mse", topk =
+    1, variable_importance = "scaled_coefficient"),
   verbose = 0,
   seed = NA
 )

@@ -145,12 +145,7 @@ getpval <- function(Y, X, Alist, maxNoObs=1000,
       
       pvalvec[ki] <- pval
     }
-    if(length(Alist) == 2){
-      pval <- min(pvalvec)
-    }
-    else{
-      pval <- min(pvalvec) * length(Alist)
-    }
+    pval <- min(pvalvec) * length(Alist)
     pval <- min(1, pval)
   }
   else if(test == "mean_sres"){
